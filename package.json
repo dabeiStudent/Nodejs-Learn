@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "@babel/core": "^7.15.5",
-    "@babel/node": "^7.15.4",
     "@babel/preset-env": "^7.15.6",
+    "@babel/node": "^7.20.7",
     "argon2": "^0.30.2",
     "async": "^3.2.4",
     "body-parser": "^1.20.1",
@@ -30,7 +30,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@babel/node": "^7.15.4",
+    "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.15.6"
   }
 }
