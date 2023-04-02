@@ -9,7 +9,12 @@
 </head>
 
 <body>
-    <h1>hello menus from ejs</h1>
+    <h1>Login</h1>
+    <form action="/api/auth/login" method="post">
+        <input type="text" name="username" placeholder="Name">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit">
+    </form>
 </body>
 
 </html>
