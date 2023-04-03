@@ -64,11 +64,16 @@ router.post('/login', async (req, res, next) => {
         res.cookie("token", token, {
             httpOnly: true
         })
-        return res.status(200).send({ success: true, message: 'Logged in', token: token, user: validUser });
+        return res.redirect('/api/auth/homeprofile/')
+        //return res.status(200).send({ success: true, message: 'Logged in', token: token, user: validUser });
     } catch (err) {
         return res.status(500).send({ success: false, message: err.message });
     }
 });
+router.post('/logout', async (req, res, next) => {
+    res.clearCookie("token")
+    return res.redirect('/')
+})
 
 router.get('/homeprofile/', (req, res, next) => {
     try {
@@ -87,13 +92,48 @@ router.get('/homeprofile/', (req, res, next) => {
         _id: userId
     })
         .then(data => {
-            return res.json({ username: data[0].username, id: data[0]._id, password: data[0].password })
+            return res.send('<br><strong><u>USERNAME:</u></strong> ' + data[0].username + '&nbsp;</br> <br> <strong><u>ID:</u></strong> ' + data[0]._id +
+                '&nbsp; </br> <br><strong><u>PASSWORD:</u></strong> ' + data[0].password + '</br>' +
+                '<br><form action = "/api/auth/logout" method="post"> <button name="button" type="submit" >Log out</button> </form></br>')
         })
         .catch(err => {
             return res.json(err)
         })
 })
+router.post('/updatesuccess', async (req, res, next) => {
+    var check = req.body.check;
+    var token = req.cookies.token
+    var d
+    var rs = jwt.verify(token, 'mk')
+    var userId = rs.id
+    user.find({
+        _id: userId
+    }, async function (err, User) {
+        if (err) {
+            return res.json(err)
+        }
+        if (User) {
+            if (check == 1) {
+                //return res.json(User[0])
+                user.updateOne({
+                    username: User[0].username
+                }, {
+                    $set: { username: 'qdbedene' }
+                }, { upsert: true })
+                return res.json(User[0])
+            }
+            if (check == 0) {
+                user.updateOne({
+                    _id: User[0]._id
+                }, {
+                    $set: { createTime: 0 }
+                })
+            }
+        }
+        res.end();
+    })
 
+})
 module.exports = router;
 
 //Tim hieu ve token, session de xac thuc dang nhap
