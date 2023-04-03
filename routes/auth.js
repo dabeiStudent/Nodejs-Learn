@@ -94,7 +94,8 @@ router.get('/homeprofile/', (req, res, next) => {
         .then(data => {
             return res.send('<br><strong><u>USERNAME:</u></strong> ' + data[0].username + '&nbsp;</br> <br> <strong><u>ID:</u></strong> ' + data[0]._id +
                 '&nbsp; </br> <br><strong><u>PASSWORD:</u></strong> ' + data[0].password + '</br>' +
-                '<br><form action = "/api/auth/logout" method="post"> <button name="button" type="submit" >Log out</button> </form></br>')
+                '<form action = "/api/auth/logout" method="post"> <button name="button" type="submit" >Log out</button> </form>' +
+                '<form action = "/api/auth/alluser" method="get"> <button name="button" type="submit" >Show all user</button> </form>')
         })
         .catch(err => {
             return res.json(err)
@@ -134,6 +135,15 @@ router.post('/updatesuccess', async (req, res, next) => {
     })
 
 })
+
+router.get('/alluser', async (req, res, next) => {
+    try {
+        const results = await user.find();
+        return res.send(results);
+    } catch (err) {
+        throw err
+    }
+});
 module.exports = router;
 
 //Tim hieu ve token, session de xac thuc dang nhap
